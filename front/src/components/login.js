@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import UploadPreview from 'material-ui-upload/UploadPreview'
 
-import { Link ,  Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Icon from '@material-ui/core/Icon'
 import './style.css'
 
@@ -60,58 +60,6 @@ class Login extends Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 
-	handleSubmit = (event) => {
-		this.state = {
-			email: ''
-		}
-
-		// console.log('An email has been sent with an automatic password' + this.state.email)
-		event.preventDefault()
-
-		console.log(this.state['email'])
-
-		// console.log('An email has been sent with an automatic password' + this.state.email)
-
-		axios
-			.post('http://localhost:3030/auth/signup', {
-				email: event.target.email.value
-			})
-			.then((response) => {
-				if (new Error()) {
-					console.log(response)
-					const snack = {
-						variant: 'success',
-						message: 'Un email vous a été adressé avec un mot de passe !'
-					}
-
-					return (
-						this.setState({ snack, displaySnack: true }),
-						window.location.reload('http://localhost:3001/login')
-					)
-				}
-			})
-			.catch((err) => {
-				if (err.message) {
-					const snack = {
-						variant: 'warning',
-						message: 'Email déjà enregistrer!'
-					}
-
-					return (
-						this.setState({ snack, displaySnack: true }),
-						window.location.reload('http://localhost:3001/login')
-					)
-				}
-			})
-		if (422) {
-			const snack = {
-				variant: 'error',
-				message: 'Email non valide!'
-			}
-
-			return this.setState({ snack, displaySnack: true })
-		}
-	}
 	handleSubmit2 = (details) => {
 		const user = this.state
 
@@ -154,19 +102,6 @@ class Login extends Component {
 			}
 		})
 	}
-	handleSubmit3 = (details) => {
-		const username = this.state
-
-		if (details === 'user connected') {
-		}
-		if (details === 'Email and password does not match') {
-		}
-		axios.post('http://localhost:3030/profile/addProfile', username).then((response) => {
-			const token = response.headers['x-access-token']
-
-			localStorage.setItem('token', token)
-		})
-	}
 
 	render() {
 		const { classes } = this.props
@@ -175,45 +110,10 @@ class Login extends Component {
 			<div>
 				<form className={classes.container} className="formulaire">
 					<div className="containerprincipal">
-						<div className="containerregister">
-							<form onSubmit={this.handleSubmit}>
-								<h1>Premiere connexion</h1>
-								<TextField
-									id="email"
-									label="email"
-									name="email"
-									style={{
-										width: 300,
-										marginLeft: 50,
-										margin: 40
-									}}
-									className={classes.textField}
-									onChange={this.handleChange}
-									margin="normal"
-									hintText="@ynov"
-									floatingLabelText="email"
-									placeholder="Inserer une adresse email valide"
-								/>
-								<br />
-								<div className="button">
-									<Button
-										type="submit"
-										variant="contained"
-										color="primary"
-										// className={classes.button}
-										style={{ backgroundColor: '#DB1C1C', marginLeft: 40 }}
-									>
-										S' enregistrer
-										<Icon className={classes.rightIcon}>send</Icon>
-									</Button>
-								</div>
-							</form>
-						</div>
 						<div className="containerlogin">
 							<h1 className="connection">Se connecter</h1>
 							<TextField
 								id="multiline-static"
-								label="email"
 								name="email"
 								className={classes.textField}
 								style={{ width: 330, marginLeft: 20, marginTop: 5 }}

@@ -4,11 +4,10 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import axios from 'axios'
+
 // @material-ui/icons
-import TextField from '@material-ui/core/TextField'
 import Email from '@material-ui/icons/Email'
-import LockOutline from '@material-ui/icons/LockOutline'
+import axios from 'axios'
 import { MySnackbarContentWrapper } from '../../components/alert'
 import Snackbar from '@material-ui/core/Snackbar'
 // core components
@@ -27,7 +26,7 @@ import loginPageStyle from '../.././assets/jss/material-kit-pro-react/views/logi
 import { Link } from 'react-router-dom'
 import image from '../.././assets/img/bg7.jpg'
 
-class LoginPage extends React.Component {
+class RegisterPage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -38,7 +37,6 @@ class LoginPage extends React.Component {
 			snack: { variant: 'warning', message: '' }
 		}
 	}
-
 	handleClose = (reason) => {
 		if (reason === 'clickaway') {
 			return
@@ -51,47 +49,57 @@ class LoginPage extends React.Component {
 		this.setState({ [event.target.name]: event.target.value })
 	}
 
-	handleSubmit = (details) => {
-		const user = this.state
-
-		if (details === 'user connected') {
+	handleSubmit = (event) => {
+		this.state = {
+			email: ''
 		}
-		if (details === 'Email and password does not match') {
+
+		// console.log('An email has been sent with an automatic password' + this.state.email)
+		event.preventDefault()
+
+		console.log(this.state['email'])
+
+		// console.log('An email has been sent with an automatic password' + this.state.email)
+
+		axios
+			.post('http://localhost:3030/auth/signup', {
+				email: event.target.email.value
+			})
+			.then((response) => {
+				if (new Error()) {
+					console.log(response)
+					const snack = {
+						variant: 'success',
+						message: 'Un email vous a été adressé avec un mot de passe !'
+					}
+
+					return (
+						this.setState({ snack, displaySnack: true }),
+						window.location.reload('http://localhost:3001/login')
+					)
+				}
+			})
+			.catch((err) => {
+				if (err.message) {
+					const snack = {
+						variant: 'warning',
+						message: 'Email déjà enregistrer!'
+					}
+
+					return (
+						this.setState({ snack, displaySnack: true }),
+						window.location.reload('http://localhost:3001/login')
+					)
+				}
+			})
+		if (422) {
+			const snack = {
+				variant: 'error',
+				message: 'Email non valide!'
+			}
+
+			return this.setState({ snack, displaySnack: true })
 		}
-		axios.post('http://localhost:3030/auth/login', user).then((response) => {
-			const token = response.headers['x-access-token']
-
-			localStorage.setItem('token', token)
-			if (response.data.details === 'user connected') {
-				const snack = {
-					variant: 'success',
-					message: 'Connecté avec succés!'
-				}
-
-				return (
-					this.setState({ snack, displaySnack: true }),
-					// <Redirect to='/recipe' />
-					window.location.replace('http://localhost:3000/recipe')
-				)
-			}
-
-			if (response.data.failed === 'Email and password does not match') {
-				const snack = {
-					variant: 'warning',
-					message: 'Email ou mot de passe erroné !'
-				}
-
-				return this.setState({ snack, displaySnack: true }) // () => window.location.reload('http://localhost:3000/login'))
-			}
-			if (response.data.failed === 'Email does not exits') {
-				const snack = {
-					variant: 'error',
-					message: 'Email non enregistré!'
-				}
-
-				return this.setState({ snack, displaySnack: true }) //, window.location.reload('http://localhost:3000/login '))
-			}
-		})
 	}
 	componentDidMount() {
 		window.scrollTo(0, 0)
@@ -119,51 +127,43 @@ class LoginPage extends React.Component {
 						<GridContainer justify="center">
 							<GridItem xs={12} sm={12} md={4}>
 								<Card>
-									<form className={classes.form}>
+									<form className={classes.form} onSubmit={this.handleSubmit}>
 										<CardHeader color="warning" signup className={classes.cardHeader}>
-											<h4 className={classes.cardTitle}>Login</h4>
+											<h4 className={classes.cardTitle}>Register</h4>
 										</CardHeader>
 
-										<CardBody signup style={{ height: 220, paddingTop: 30 }}>
-											<div>
-												<Email className={classes.inputIconsColor} />
-												<TextField
-													id="multiline-static"
-													name="email"
-													placeholder="Email"
-													className={classes.textField}
-													style={{ width: 220, marginLeft: 20 }}
-													onChange={this.handleChange('name')}
-													margin="normal"
-												/>
-											</div>
-											<br />
-											<br />
-											<div>
-												<LockOutline className={classes.inputIconsColor} />
-												<TextField
-													id="password"
-													placeholder="Enter your password"
-													name="password"
-													type="password"
-													hintText="enter your Password"
-													className={classes.textField}
-													style={{ width: 220, marginLeft: 20 }}
-													onChange={this.handleChange('name')}
-												/>
-											</div>
+										<CardBody signup style={{ height: 140, paddingTop: 40 }}>
+											<CustomInput
+												onChange={this.handleChange}
+												id="email"
+												formControlProps={{
+													fullWidth: true
+												}}
+												inputProps={{
+													placeholder: 'Email...',
+													type: 'email',
+													startAdornment: (
+														<InputAdornment position="start">
+															<Email className={classes.inputIconsColor} />
+														</InputAdornment>
+													)
+												}}
+											/>
 										</CardBody>
-										<div className={classes.textCenter} onClick={this.handleSubmit}>
-											<Button simple color="primary" size="lg">
-												Connection
+										<div className={classes.textCenter}>
+											<Button simple color="primary" size="lg" type="submit">
+												Send password
 											</Button>
 										</div>
 										<div className={classes.textCenter}>
-											<Link to="register">
+											<Link to="login-page">
 												<Button simple color="primary" size="lg">
-													First Connexion ?
+													Sign in ?
 												</Button>
 											</Link>
+										</div>
+
+										<div>
 											<Snackbar
 												anchorOrigin={{
 													vertical: 'bottom',
@@ -219,4 +219,4 @@ class LoginPage extends React.Component {
 	}
 }
 
-export default withStyles(loginPageStyle)(LoginPage)
+export default withStyles(loginPageStyle)(RegisterPage)

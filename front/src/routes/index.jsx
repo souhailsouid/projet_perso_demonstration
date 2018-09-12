@@ -27,6 +27,7 @@ import DetailProjectAdmin from '.././components/getadmin'
 import SectionCards from '.././components/sectionCards'
 import BlogPostsPage2 from '.././components/BlogPostsPage'
 import SectionJavascript from '.././components/stepper'
+import RegisterPage from '.././views/LoginPage/RegisterPage.jsx'
 
 var indexRoutes = [
 	// { path: '/about-us', name: 'AboutUsPage', component: AboutUsPage },
@@ -42,7 +43,7 @@ var indexRoutes = [
 	{ path: '/product-page', name: 'ProductPage', component: ProductPage },
 	{ path: '/sections', name: 'SectionsPage', component: SectionsPage },
 	{ path: '/profilecard', name: 'SectionCards', component: SectionCards },
-
+	{ path: '/register', name: 'RegisterPage', component: RegisterPage },
 	{ path: '/monprofil', name: 'Profil', component: Profil },
 	{ path: '/edit_profil', name: 'EditProfil', component: EditProfil },
 	{ path: '/formulaire', name: 'TextFields', component: TextFields },
