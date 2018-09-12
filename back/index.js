@@ -71,14 +71,14 @@ app.post('/api/form', (req, res) => {
 			port: 587,
 			secure: false, // true for 465, false for other ports
 			auth: {
-				user: 'mr.souid@live.fr', // generated ethereal user
-				pass: 'ad&gjk456' // generated ethereal password
+				user: '*******', // generated ethereal user
+				pass: '****' // generated ethereal password
 			}
 		})
 		let mailOptions = {
-			from: '"Souhail" <mr.souid@live.fr>', // sender address
-			to: 'souhailsouid4@gmail.com',
-			replyTo: 'mr.souid@live.fr', // list of receivers
+			from: '"Souhail" <********>', // sender address
+			to: '%%%',
+			replyTo: '********', // list of receivers
 			subject: 'Contact request ✔', // Subject line
 			text: 'Hello world?', // plain text body
 			html: htmlEmail // html body
